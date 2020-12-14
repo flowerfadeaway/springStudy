@@ -1,7 +1,10 @@
 package com.example.demo.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 //@TableName("user")
@@ -16,10 +19,12 @@ public class User {
     private int version;
     //添加填充内容
     @TableField(fill = FieldFill.INSERT)
-    private Data createTime;
+//    @TableField(value = "create_time",fill = FieldFill.INSERT)
+//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Data updateTime;
+    private Date updateTime;
 
     @TableLogic//逻辑删除
     private Integer deleted;

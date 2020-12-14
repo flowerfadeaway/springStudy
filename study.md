@@ -247,10 +247,10 @@ public class User {
     private String email;
     //添加填充内容
     @TableField(fill = FieldFill.INSERT)
-    private Data createTime;
+    private Date createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Data updateTime;
+    private Date updateTime;
 }
 ```
 * 编写处理器`MyDataObjectHandler.java`处理注解
@@ -275,6 +275,8 @@ public class MyDataObjectHandler implements MetaObjectHandler{
 }
 ```
 * 测试插入，测试更新，观察数据即可
+
+<font color='red'>插入的时候时间字段具有回填功能，数据库层面的么有测，可以尝试一下</font>
 
 ### 乐观锁
 
@@ -421,7 +423,15 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 ```
-5. 测试删除
+5. 配置逻辑删除组件
+```$xslt
+    //逻辑删除组件
+    @Bean
+    public ISqlInjector sqlInjector(){
+        return new LogicSqlInjector();
+    }
+```
+6. 测试删除
 ```
 //测试删除
 @Test
@@ -430,6 +440,9 @@ public void testDelete(){
     userMapper.deleteById(1310147365178114052L);
 }
 ```
+
+<font color='red'>插入的时候逻辑删除字段没有回填功能</font>
+
 ### 性能分析插件
 由于在在我们的平时开发中，会遇到一些慢sql，测试！durd...操作,mybatis-plus提供性能分析插件，如果超过这个时间就停止运行！    
 
