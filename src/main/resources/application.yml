@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    username: root
+    password: 730707
+    # Mac电脑需要配置：useSSL=false
+    # MySQL8中时区配置：serverTimezone=UTC
+    # 编码格式配置：useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/mpStudy?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    # MySQL5.x 驱动：com.mysql.jdbc.Driver
+    # MySQL8 驱动：com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 配置日志
+# 我们所有的sql现在是控制台可见的
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case=false: true
