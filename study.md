@@ -218,6 +218,8 @@ public void testSelect2(){
 
 阿里巴巴开发手册：所有的表：gmt_carete、gmt_modified、像这两个字段一般所有的表都必须配置上！而且都是自动化的！
 
+[mysql时区出现的问题](https://blog.csdn.net/love20yh/article/details/80799610)
+
 1. 数据库级别
 
 在表中新增字段`create_time`,`update_time`
@@ -229,10 +231,12 @@ CREATE TABLE `user` (
   `age` int(11) DEFAULT NULL COMMENT '年龄',
   `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' ,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' ,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 ```
+
+<font color='red'>这个方法在mac本上使用没问题，刚才windows试验就出了问题，可能是某些配置问题，所以变得不喜欢这种方法了</font>
 
 2. 代码级别
 
@@ -276,7 +280,8 @@ public class MyDataObjectHandler implements MetaObjectHandler{
 ```
 * 测试插入，测试更新，观察数据即可
 
-<font color='red'>插入的时候时间字段具有回填功能，数据库层面的么有测，可以尝试一下</font>
+<font color='red'>插入的时候时间字段具有回填功能，数据库层面的么有测，可以尝试一下，这里经过几次测试，发现，在数据库配置，和在代码配置中的区别，数据库只能配置插入为null时候的默认值，对于乐观锁，就会为1，即使配置了默认为1，因为可能对于int默认传入数据库就为0，所以，感觉用代码配置更灵活</font>
+<font color='red'>另一个发现就是：如果是代码配置的字段，都会回填</font>
 
 ### 乐观锁
 

@@ -11,11 +11,13 @@ import java.util.Date;
 public class User {
     @TableId(type = IdType.ID_WORKER)
     private Long id;
+//    @TableField(condition = SqlCondition.LIKE)
     private String name;
     private Integer age;
     private String email;
 
     @Version//代表这是一个乐观锁
+    @TableField(fill = FieldFill.INSERT)
     private int version;
     //添加填充内容
     @TableField(fill = FieldFill.INSERT)
@@ -27,5 +29,6 @@ public class User {
     private Date updateTime;
 
     @TableLogic//逻辑删除
+    @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 }
