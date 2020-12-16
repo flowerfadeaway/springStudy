@@ -65,4 +65,39 @@ public class MybatisPlusApplicationTests {
         System.out.println("这是delete："+user.getDeleted());
         System.out.println(new Date());
     }
+
+    // 测试一下！（成功 案例）
+
+    @Test
+    public void testOptimisticLocker(){
+        // 1、查询用户信息
+        User user = userMapper.selectById(1L);
+
+        // 2、修改用户信息
+        user.setName("地理热巴");
+        user.setAge(38);
+        // 3、执行更新操作
+        userMapper.updateById(user);
+
+    }
+
+    // 测试一下！ （失败 案例） -------多线程情况下
+    @Test
+    public void testOptimisticLocker2(){
+        //线程1
+        User user = userMapper.selectById(1L);
+        user.setName("地理热巴11111111111111");
+        user.setAge(38);
+
+        //模拟另一个线程执行了插队操作
+
+        User user2 = userMapper.selectById(1L);
+        user2.setName("地理热巴2222222222222222222");
+        user2.setAge(38);
+        userMapper.updateById(user2);
+
+
+        userMapper.updateById(user); //如果没有乐观锁就会覆插队线程的值！
+
+    }
 }
